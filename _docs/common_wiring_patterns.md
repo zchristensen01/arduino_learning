@@ -1,0 +1,1 @@
+# Common Wiring Patterns

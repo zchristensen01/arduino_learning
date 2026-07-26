@@ -22,6 +22,11 @@ Arduino/                        ← sketchbook root
 ├── 07_integration/             ← multi-sensor projects
 ├── 99_capstone/                ← final build
 └── _docs/                      ← foundations, cheat sheets
+    ├── 00_foundations.md
+    ├── 01_sessions_1_to_6.md
+    ├── pinout_cheatsheet.md
+    ├── common_wiring_patterns.md
+    └── library_notes.md
 ```
 
 The folders are **thematic, not chronological**. They group by concept — outputs,
