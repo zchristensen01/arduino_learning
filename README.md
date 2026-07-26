@@ -36,19 +36,23 @@ teaches, not the week it was written, so `03_Button_LED` sits under
   must contain `01_Blink.ino`, or the IDE opens it as an untitled sketch.
 - **One concept per sketch.** Variants get a letter suffix (`03b_Button_Toggle`)
   and stay next to the sketch they build on.
-- **Every sketch folder has a README** covering the wiring, what the code does,
-  and the idea it's there to teach.
+- **Every sketch folder has a README** following the same template: phase,
+  session, status, what it does, parts, wiring table, concepts learned, lessons
+  learned. Plus a `wiring.jpg` phone photo where there's something to see.
+- **Write the README while the build is fresh.** This is 50+ projects. In six
+  months there will be roughly zero memory of project #7 unless it's written
+  down — and the capstone gets built by pulling patterns back out of these.
 - **Pin numbers are named constants** at the top of the file, never bare numbers
   scattered through the logic.
 
 ## Progress
 
-| # | Sketch | Concept |
-| --- | --- | --- |
-| 01 | [Blink](00_phase0_setup/01_Blink/) | `pinMode`, `digitalWrite`, `delay` |
-| 02 | [External LED](00_phase0_setup/02_External_LED/) | breadboarding, current-limiting resistor, Serial |
-| 03 | [Button LED](02_digital_inputs/03_Button_LED/) | `INPUT_PULLUP`, active-LOW logic |
-| 03b | [Button Toggle](02_digital_inputs/03b_Button_Toggle/) | state variables, edge detection, bounce |
+| # | Sketch | Phase | Session | Concept | Status |
+| --- | --- | --- | --- | --- | --- |
+| P01 | [Blink](00_phase0_setup/01_Blink/) | 0 — Setup | 1 | `pinMode`, `digitalWrite`, `delay` | ✓ Working |
+| P02 | [External LED](00_phase0_setup/02_External_LED/) | 0 — Setup | 2 | breadboarding, current-limiting resistor, Serial | ✓ Working |
+| P03 | [Button LED](02_digital_inputs/03_Button_LED/) | 2 — Digital Inputs | 3 | `INPUT_PULLUP`, active-LOW logic | ✓ Working |
+| P03b | [Button Toggle](02_digital_inputs/03b_Button_Toggle/) | 2 — Digital Inputs | 3 | state variables, edge detection, bounce | ✓ Working |
 
 ## Hardware
 

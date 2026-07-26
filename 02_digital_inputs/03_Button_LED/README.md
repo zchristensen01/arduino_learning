@@ -1,42 +1,63 @@
-# 03 — Button LED (momentary)
+# P03 — Button LED (momentary)
 
-LED follows the button: held down = on, released = off.
+**Phase:** 2 — Digital Inputs
+**Session:** 3
+**Status:** ✓ Working
 
-## Hardware
+## What it does
 
-| Part | Connection |
-| --- | --- |
-| LED anode | D9 through 220 Ω |
-| LED cathode | GND |
-| Button leg A | D2 |
-| Button leg B | GND |
+LED on D9 follows a push button on D2 — held down = on, released = off. Prints
+`PRESSED` / `released` to Serial every 50 ms.
 
-No external pull-up resistor — the ATmega has one built into every input pin
-and `INPUT_PULLUP` switches it on.
+## Parts
 
-## What's going on
+- 1 × red LED
+- 1 × 220Ω resistor
+- 1 × tactile push button (4-leg)
+- 4 × jumper wires
+- Breadboard
 
-- `pinMode(PIN_BTN, INPUT_PULLUP)` — the internal ~20 kΩ resistor ties the pin
-  to 5 V. Open button = pin reads HIGH. Pressed = the button shorts it to GND =
-  pin reads LOW.
-- `digitalRead(pin)` returns HIGH or LOW.
-- `pressed ? HIGH : LOW` — read the inverted logic once, into a `bool` named for
-  what it means, then stop thinking about it.
+No external pull-up resistor — the ATmega has one built into every input pin.
 
-## Concept — active-LOW
+## Wiring
 
-Pressed reads LOW, which is backwards from intuition. The reason is floating
-inputs: a bare input pin with nothing attached picks up ambient electrical noise
-and reads randomly. A pull-up gives it a defined resting state, and the button's
-job becomes overpowering that resistor by connecting straight to ground. Ground
-wins, so pressed = LOW.
+| From | To |
+|---------------|-----------------------|
+| UNO D9 | LED anode (long leg) |
+| LED cathode | 220Ω resistor |
+| 220Ω other end| UNO GND |
+| UNO D2 | Button leg A |
+| Button leg B | UNO GND |
 
-The alternative (external pull-*down*, button to 5 V) gives normal-feeling logic
-but costs a resistor and a wire. Nearly all Arduino code uses `INPUT_PULLUP`.
+> _TODO: add `wiring.jpg` — phone photo of the breadboard. Swap this line for `![wiring](wiring.jpg)` once it exists._
 
-## Known rough edge
+## Concepts learned
 
-`delay(50)` in the loop keeps the Serial Monitor from flooding, and it happens to
-mask contact bounce too. Both of those are the wrong fix — see
-[`03b_Button_Toggle`](../03b_Button_Toggle/) for why it starts to matter, and
-`millis()` for the real answer.
+- `pinMode(pin, INPUT_PULLUP)` switches on the chip's internal ~20 kΩ resistor,
+  tying the pin to 5 V when nothing else is driving it
+- `digitalRead(pin)` returns HIGH or LOW
+- **Active-LOW logic:** open button = HIGH, pressed = LOW. Backwards from
+  intuition, and standard across nearly all Arduino code.
+- **Floating inputs:** a bare input pin with nothing attached picks up ambient
+  electrical noise and reads randomly. The pull-up gives it a defined resting
+  state; the button's job is to overpower that resistor by connecting straight
+  to ground. Ground wins, so pressed = LOW.
+- Read the inverted logic **once**, into a `bool` named for what it means
+  (`pressed`), then stop thinking about it. `digitalRead(...) == LOW` scattered
+  through the logic is how polarity bugs happen.
+- `pressed ? HIGH : LOW` — the ternary operator, a compact if/else expression
+
+## Lessons learned
+
+- A 4-leg tactile button has two **pairs** of legs already shorted together
+  inside. Wire across the wrong pair and the circuit is permanently closed —
+  the LED sits on and the button does nothing. Legs directly across the diagonal
+  are always the switched pair.
+- The alternative wiring (external pull-*down* resistor, button to 5 V) gives
+  normal-feeling logic — pressed = HIGH — but costs an extra resistor and wire.
+  `INPUT_PULLUP` is free, which is why everyone uses it and everyone lives with
+  the inverted logic.
+- `delay(50)` in the loop is there to keep the Serial Monitor from flooding, and
+  it happens to mask contact bounce too. Both are the wrong fix — see
+  [`03b_Button_Toggle`](../03b_Button_Toggle/) for where that starts to bite,
+  and `millis()` for the real answer.
