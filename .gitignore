@@ -1,0 +1,24 @@
+# Arduino IDE / CLI build output
+build/
+*.hex
+*.elf
+*.bin
+*.map
+.theia/
+.vscode/arduino.json
+.vscode/c_cpp_properties.json
+
+# Arduino IDE 2.x sketch metadata
+sketch.yaml.bak
+
+# OS cruft
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+.DS_Store
+._*
+
+# Editors
+*.swp
+*~
+.idea/
