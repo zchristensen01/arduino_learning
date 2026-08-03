@@ -12,6 +12,7 @@ Arduino/                        ← sketchbook root
 │   ├── 01_Blink/
 │   └── 02_External_LED/
 ├── 01_outputs/                 ← traffic light (P04), fade (P05), RGB (P06)
+│   └── 04_Traffic_Light/
 ├── 02_digital_inputs/          ← button (P03), tilt, reed, shake, PIR
 │   ├── 03_Button_LED/
 │   └── 03b_Button_Toggle/
@@ -58,6 +59,7 @@ teaches, not the week it was written, so `03_Button_LED` sits under
 | P02 | [External LED](00_phase0_setup/02_External_LED/) | 0 — Setup | 2 | breadboarding, current-limiting resistor, Serial | ✓ Working |
 | P03 | [Button LED](02_digital_inputs/03_Button_LED/) | 2 — Digital Inputs | 3 | `INPUT_PULLUP`, active-LOW logic | ✓ Working |
 | P03b | [Button Toggle](02_digital_inputs/03b_Button_Toggle/) | 2 — Digital Inputs | 3 | state variables, edge detection, bounce | ✓ Working |
+| P04 | [Traffic Light](01_outputs/04_Traffic_Light/) | 1 — Outputs | 4 | `millis()` state machine, `enum class`, no `delay()` | ✓ Working |
 
 ## Hardware
 
