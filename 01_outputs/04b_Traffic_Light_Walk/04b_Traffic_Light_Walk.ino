@@ -106,12 +106,13 @@ void loop() {
       if (elapsed >= 1500) {
         if (walkRequested) {
           state = Light::WALK;
+          Serial.println("-> WALK"); // print inside each branch, or the log lies about where we went
         }
         else {
           state = Light::RED;
-        }  
+          Serial.println("-> RED");
+        }
         stateStart = millis();
-        Serial.println("-> RED");
       }
       break;
     case Light::WALK: {

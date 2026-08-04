@@ -122,24 +122,40 @@ fast side or the slow side.
   `loop()`, `millis()` for timing, transition logic. That skeleton is a robotics
   controller — prosthetic and drone state machines grow exactly this way.
 
-## Known bug
+## Bug found and fixed — the wrong-log-line lesson, live
 
-The YELLOW case prints `"-> RED"` on both of its exits, including the one that
-actually goes to WALK. This is the wrong-log-line lesson above, still live in the
-code. Fix:
+YELLOW has two exits but originally had **one** print, sitting after the
+`if/else` where both paths converge:
 
 ```cpp
-case Light::YELLOW:
-  setLight(false, true, false, false);
-  if (elapsed >= 1500) {
-    if (walkRequested) {
-      state = Light::WALK;
-      Serial.println("-> WALK");
-    } else {
-      state = Light::RED;
-      Serial.println("-> RED");
-    }
-    stateStart = millis();
-  }
-  break;
+if (walkRequested) { state = Light::WALK; }
+else               { state = Light::RED;  }
+stateStart = millis();
+Serial.println("-> RED");   // fires on BOTH exits
 ```
+
+So a transition into WALK announced itself as `-> RED`. The lights were doing the
+right thing; the log was lying about it. Exactly the failure mode described above
+— Serial is the only window into the system, so a wrong print turns a logic bug
+into an apparent hardware bug. Worse here, because the LEDs *also* go red on the
+walk phase, so the display corroborated the wrong story.
+
+The fix is to put each print **inside its own branch**, next to the assignment it
+describes:
+
+```cpp
+if (walkRequested) {
+  state = Light::WALK;
+  Serial.println("-> WALK");
+} else {
+  state = Light::RED;
+  Serial.println("-> RED");
+}
+stateStart = millis();
+```
+
+**The general rule:** a log line belongs with the branch that caused it. Hoisting
+it to where the paths converge is how it drifts out of sync with the code — and a
+print that survives a refactor unchanged is the one most likely to be wrong.
+`stateStart = millis()` *does* belong after the merge, because it's genuinely
+common to both paths. Tell those two apart.
