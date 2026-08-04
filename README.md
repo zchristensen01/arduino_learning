@@ -12,7 +12,8 @@ Arduino/                        ← sketchbook root
 │   ├── 01_Blink/
 │   └── 02_External_LED/
 ├── 01_outputs/                 ← traffic light (P04), fade (P05), RGB (P06)
-│   └── 04_Traffic_Light/
+│   ├── 04_Traffic_Light/
+│   └── 04b_Traffic_Light_Walk/
 ├── 02_digital_inputs/          ← button (P03), tilt, reed, shake, PIR
 │   ├── 03_Button_LED/
 │   └── 03b_Button_Toggle/
@@ -60,6 +61,7 @@ teaches, not the week it was written, so `03_Button_LED` sits under
 | P03 | [Button LED](02_digital_inputs/03_Button_LED/) | 2 — Digital Inputs | 3 | `INPUT_PULLUP`, active-LOW logic | ✓ Working |
 | P03b | [Button Toggle](02_digital_inputs/03b_Button_Toggle/) | 2 — Digital Inputs | 3 | state variables, edge detection, bounce | ✓ Working |
 | P04 | [Traffic Light](01_outputs/04_Traffic_Light/) | 1 — Outputs | 4 | `millis()` state machine, `enum class`, no `delay()` | ✓ Working |
+| P04b | [Traffic Light + WALK](01_outputs/04b_Traffic_Light_Walk/) | 1 — Outputs | 4 | adding an FSM state, Serial RX/TX buffers, bounce | ✓ Working |
 
 ## Hardware
 
