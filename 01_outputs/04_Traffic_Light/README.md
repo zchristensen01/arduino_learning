@@ -67,6 +67,8 @@ GREEN short — but only after cars have had a fair 1.5 s minimum.
 - Every `case` has the same two parts: (1) do the state's job — drive the LEDs
   to match; (2) check whether it's time to leave, and if so change state and
   re-stamp `stateStart`.
+- `bool` → `digitalWrite` works because `HIGH`/`true` = 1 and `LOW`/`false` = 0 —
+  which is what lets `setLight(bool, bool, bool)` take plain `true`/`false`.
 
 ### Keeping the two halves apart
 
@@ -82,10 +84,6 @@ GREEN short — but only after cars have had a fair 1.5 s minimum.
   press nobody made.
 - Polling the button on *every* iteration is the whole point. With `delay()` in
   the loop, a press during the wait is simply gone — nothing is listening.
-
-### Misc
-
-- `bool` → `digitalWrite` works because `HIGH`/`true` = 1 and `LOW`/`false` = 0.
 
 > Serial gets a proper treatment in
 > [P04b](../04b_Traffic_Light_Walk/#how-serial-actually-works) — `Serial.begin`,
