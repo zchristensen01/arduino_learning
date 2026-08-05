@@ -82,6 +82,30 @@ Same as [P04](../04_Traffic_Light/), plus:
   **interrupt** → **RX ring buffer** (64 bytes, in RAM) → **`Serial.read()`**.
   The interrupt is automatic, installed by `Serial.begin`; `read()` is the only
   piece I have to write. The buffer fills itself and never empties itself.
+
+#### `UDR0` — the one-byte doorstep
+
+- `UDR0` is a **one-byte parking spot inside the UART hardware** — a doorstep
+  with room for one parcel. It's where a byte first lands coming in, and where it
+  sits just before being shifted out going out.
+- **`UDR0` moves nothing. Hardware raises flags; code moves bytes.** The hardware
+  signals "a byte is here" or "I'm empty" — the *interrupt handler* is what
+  actually copies between `UDR0` and the ring buffer. `UDR0` is a storage
+  location, not an agent.
+- Same division of labour everywhere on this chip, **including the timer behind
+  `millis()`**.
+
+#### What's actually mine to write
+
+- My code's entire job in the serial system is: `loop()` reads out of RX,
+  `loop()` prints into TX. **Nothing I write ever touches `UDR0`, the interrupts,
+  or the wire.**
+- Both calls are fast, local array operations in RAM. **`print` isn't sending
+  anything** — it drops bytes in a queue and walks away. Actual transmission
+  happens later, on the interrupt's schedule, at wire speed.
+
+#### Why the buffers exist
+
 - **TX and RX are separate buffers**, and buffers only ever hold bytes crossing
   the wire — internal variables never touch them. A buffer adds no speed; it buys
   **decoupling**, so neither side waits on the other.

@@ -50,7 +50,7 @@ void loop() {
   
   lastPressed = pressed;
 
-  if (Serial.available() > 0) {
+  if (Serial.available() > 0) { // checking for interrupt
     char key = Serial.read();
     switch (key) {
     case 'r':
