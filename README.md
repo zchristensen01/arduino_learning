@@ -13,11 +13,13 @@ Arduino/                        ← sketchbook root
 │   └── 02_External_LED/
 ├── 01_outputs/                 ← traffic light (P04), fade (P05), RGB (P06)
 │   ├── 04_Traffic_Light/
-│   └── 04b_Traffic_Light_Walk/
+│   ├── 04b_Traffic_Light_Walk/
+│   └── 05_PWM_Fade/
 ├── 02_digital_inputs/          ← button (P03), tilt, reed, shake, PIR
 │   ├── 03_Button_LED/
 │   └── 03b_Button_Toggle/
 ├── 03_analog_inputs/           ← pot, LDR, thermistor, joystick
+│   └── 05b_Knob_Brightness/
 ├── 04_displays/                ← LCD, 7-seg, shift register
 ├── 05_comms/                   ← Serial, I²C (MPU6050), IR remote, RTC
 ├── 06_actuators/               ← servo, DC motor, stepper, relay
@@ -62,6 +64,8 @@ teaches, not the week it was written, so `03_Button_LED` sits under
 | P03b | [Button Toggle](02_digital_inputs/03b_Button_Toggle/) | 2 — Digital Inputs | 3 | state variables, edge detection, bounce | ✓ Working |
 | P04 | [Traffic Light](01_outputs/04_Traffic_Light/) | 1 — Outputs | 4 | `millis()` state machine, `enum class`, no `delay()` | ✓ Working |
 | P04b | [Traffic Light + WALK](01_outputs/04b_Traffic_Light_Walk/) | 1 — Outputs | 4 | adding an FSM state, Serial RX/TX buffers, bounce | ✓ Working |
+| P05 | [PWM Fade](01_outputs/05_PWM_Fade/) | 1 — Outputs | 5 | `analogWrite`, duty cycle, blocking vs `millis()` | ○ Not started |
+| P05b | [Knob-Controlled Brightness](03_analog_inputs/05b_Knob_Brightness/) | 3 — Analog Inputs | 5 | `analogRead` → `map()` → `analogWrite` | ○ Not started |
 
 ## Hardware
 
