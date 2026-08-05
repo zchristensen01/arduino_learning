@@ -48,9 +48,12 @@ Same as [P04](../04_Traffic_Light/), plus:
   entry conditions make them distinct states.
 - **If the difference is just a number, use data. If it's behaviour, use a state.**
 - **A flag is a contract between whoever sets it and whoever clears it — and
-  inserting a new state silently rewrites that contract.** `walkRequested` had to
-  move its clear to the transition that now *satisfies* the request (WALK → GREEN,
-  not GREEN → YELLOW). Nothing in the compiler checks this.
+  inserting a new state silently rewrites that contract.** [P04](../04_Traffic_Light/)
+  established that the clear belongs where the request is *satisfied*; what it
+  couldn't show is that "where" isn't fixed. `walkRequested` had to move its clear
+  from GREEN → YELLOW to WALK → GREEN, because WALK is now the thing that actually
+  satisfies the request. **Nothing in the compiler checks this** — the old code
+  still compiles and still runs, just wrong.
 
 ### 2. Timed behaviour inside a state
 
@@ -72,6 +75,7 @@ Same as [P04](../04_Traffic_Light/), plus:
 
 ### How Serial actually works
 
+- `Serial.begin(9600)` **sets up the UART hardware** at 9600 bits per second.
 - `Serial.begin()` and the Serial Monitor are **two ends of one pipe**. The
   Monitor is just an app at the far end, fully interchangeable with PuTTY or a
   Python script. Baud must match on both sides because **UART has no clock line**.

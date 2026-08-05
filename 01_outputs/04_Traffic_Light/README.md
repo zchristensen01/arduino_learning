@@ -64,33 +64,47 @@ GREEN short — but only after cars have had a fair 1.5 s minimum.
 
 - With just `if (pressed)`, that branch would fire ~50,000 times per second.
 - **Edge detection converts a continuous condition into a discrete event.**
-- Sensor code and control code should never be entangled. The button-reading
-  code and the traffic-light code never talk to each other directly — only
-  through the shared `walkRequested` boolean. One side sets it, the other
-  consumes and clears it.
 - Every `case` has the same two parts: (1) do the state's job — drive the LEDs
   to match; (2) check whether it's time to leave, and if so change state and
   re-stamp `stateStart`.
 
+### Keeping the two halves apart
+
+- **Sensor code and control code should never be entangled.** The button-reading
+  code and the traffic-light code never talk to each other directly — only
+  through the shared `walkRequested` boolean. One side sets it, the other
+  consumes and clears it.
+- That flag is the **seam** between the two halves. It survives thousands of loop
+  iterations until the state machine consumes it, which is exactly why the button
+  never has to know a traffic light exists.
+- Clearing it belongs at the moment the request is **satisfied** — here, the
+  GREEN → YELLOW transition. Leave it set and the next green gets cut short by a
+  press nobody made.
+- Polling the button on *every* iteration is the whole point. With `delay()` in
+  the loop, a press during the wait is simply gone — nothing is listening.
+
 ### Misc
 
 - `bool` → `digitalWrite` works because `HIGH`/`true` = 1 and `LOW`/`false` = 0.
-- `Serial.begin(9600)` sets up the UART hardware at 9600 bits per second.
+
+> Serial gets a proper treatment in
+> [P04b](../04b_Traffic_Light_Walk/#how-serial-actually-works) — `Serial.begin`,
+> `UDR0`, the ring buffers, and the blocking asymmetry all live there.
 
 ## Lessons learned
 
 - The math is the same as [P03b](../../02_digital_inputs/03b_Button_Toggle/) —
   edge detection, a flag that survives across iterations — just with three
   branches instead of one. Once the pattern clicked, the extra states were free.
-- `walkRequested` is the seam between the two halves. It survives thousands of
-  loop iterations until the state machine consumes it, which is exactly why the
-  button never has to know a traffic light exists.
-- Polling the button on *every* iteration is the whole point. With `delay()` in
-  the loop, a press during the wait is simply gone — nothing is listening.
-- Clearing the flag (`walkRequested = false`) belongs at the moment the request
-  is **satisfied**, inside the GREEN → YELLOW transition. Leave it set and the
-  next green gets cut short by a press nobody made.
 - I first justified re-stamping `stateStart` as skipping Arduino core bootup
   time. Wrong reason — bootup is a rounding error. The real reason is that
   `elapsed` must be relative to the current state's start, or every state after
   the first would compare against time-since-power-on and fire immediately.
+
+## Where this goes next
+
+[P04b](../04b_Traffic_Light_Walk/) adds a fourth `WALK` state and finds the catch
+in the flag rule above: *where* the clear belongs isn't fixed. Insert a state
+between the request and its satisfaction, and the clear has to move with it —
+which is the same idea one level up, that a flag is a **contract** between
+whoever sets it and whoever clears it.
